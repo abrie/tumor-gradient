@@ -1,0 +1,4 @@
+dependencies==0.15
+nibabel==2.4.1
+numpy==1.17.0
+six==1.12.0
