@@ -1,0 +1,17 @@
+import numpy as np
+
+def compute_regressions(images, degree):
+    num_images = len(images)
+    A = np.stack(images)
+    A2 = A.reshape(num_images, -1)
+    X = np.arange(num_images)
+    regressions = np.polyfit(X, A2, degree)
+    newShape = images[0].shape + (degree+1,)
+    return regressions.reshape(newShape)
+
+def compute_gradients(images):
+    num_images = len(images)
+    A = np.stack(images)
+    A2 = A.reshape(num_images, -1)
+    [dx,dy] = np.gradient(A2)
+    return dx.reshape(A.shape)
