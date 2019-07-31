@@ -1,23 +1,7 @@
-import os
-import nibabel
-import numpy as np
 import matplotlib.pyplot as plt
+
 import fitter
-
-maskPath = os.path.join("images/mask.nii")
-maskImage = nibabel.load(maskPath)
-maskData = maskImage.get_fdata()
-maskSize = maskImage.shape
-
-def loadImage(path):
-    image = nibabel.load(path)
-    data = image.get_fdata()
-    shape = image.shape
-    return {"image":image,"data":data,"shape":shape}
-
-imageFiles = list(map(lambda i: f'images/CBCT_{i}.nii', range(1,8)))
-images = list(map(lambda path: loadImage(path), imageFiles))
-#images.append(loadImage('images/mask.nii'))
+import loader
 
 def show_slices(slices, gradients):
     fig, axes = plt.subplots(2, len(slices), sharey=True, sharex=True)
