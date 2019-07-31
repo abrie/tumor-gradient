@@ -15,3 +15,7 @@ def compute_gradients(images):
     A2 = A.reshape(num_images, -1)
     [dx,dy] = np.gradient(A2)
     return dx.reshape(A.shape)
+
+def apply_mask(image, mask, threshold):
+    masked = np.ma.MaskedArray(image, mask < threshold)
+    return masked
