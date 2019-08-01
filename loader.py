@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import fnmatch
 import nibabel
 
@@ -22,6 +23,10 @@ def loadImage(path):
     return image.get_fdata()
 
 def loadImages(path):
+    if not os.path.exists(path):
+        print(f'Cannot find folder "{os.path.abspath(path)}".\nDoes the folder exist and contain patient data?')
+        sys.exit()
+
     filelist = findImages(path)
     imagepaths = list(map(lambda filename: os.path.join(path, filename), filelist))
     return list(map(lambda path: loadImage(path), imagepaths))
