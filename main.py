@@ -38,14 +38,12 @@ def show_slices(slices, masks, gradients):
 
 images = loader.loadImages()
 mask = loader.loadMask()
-
-raw = list(map(lambda i: i["data"], images))
-masked = list(map(lambda i: fitter.apply_mask(i, mask, 95.0), raw))
+masked = list(map(lambda i: fitter.apply_mask(i, mask, 95.0), images))
 grads = fitter.compute_gradients(masked)
 masked_grads = list(map(lambda i: fitter.apply_mask(i, mask, 95.0), grads))
 
 slicehere = 30
-ss = list(map(lambda image: image[slicehere,:,:], raw))
+ss = list(map(lambda image: image[slicehere,:,:], images))
 ms = list(map(lambda image: image[slicehere,:,:], masked))
 gs = list(map(lambda image: image[slicehere,:,:], masked_grads))
 show_slices(ss, ms, gs)
