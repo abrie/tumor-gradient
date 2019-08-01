@@ -11,8 +11,9 @@ class TestAllTheThings(unittest.TestCase):
             sample[0][0][0] = val
 
         mask = np.zeros((3, 3, 3))
-        mask[0][0][0]=50.0
+        mask[0][0][0] = 50.0
         self.mask = mask
+        self.mask_threshold = mask[0][0][0]-1 # Set threshold below the data value, to leave it unmasked.
 
     def test_fitter(self):
         degree = 1
@@ -28,11 +29,12 @@ class TestAllTheThings(unittest.TestCase):
         self.assertEqual(gradients[3][0][0][0], 2.0)
 
     def test_masking(self):
-        masked = fitter.apply_mask(self.samples[3], self.mask, 10.0)
-        print(self.samples[3][0])
-        print(self.mask[0])
-        print(masked[0])
-        self.assertEqual(0,0)
+        sample = self.samples[3]
+        masked = fitter.apply_mask(sample, self.mask, self.mask_threshold)
+        self.assertEqual(np.ma.is_masked(masked),True)
+        self.assertEqual(masked[0][0][0],sample[0][0][0])
+        self.assertEqual(masked.mask[0][0][0],False)
+        self.assertEqual(masked.mask[1][0][0],True)
 
 if __name__ == '__main__':
     unittest.main()
