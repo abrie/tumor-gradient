@@ -1,6 +1,6 @@
 # Measuring Changes in Tumor Density
 
-We're given a series of NIfTI formatted images describing a tumor undergoing treatment. The task is to measure change in tumor density as a function of time.
+Given a series of NIfTI images describing a tumor under treatment, measure the tumor's density change as a function of time.
 
 A screenshot of the result:
 
