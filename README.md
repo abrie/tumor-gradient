@@ -12,13 +12,15 @@ First, install dependencies:
 
 ```make install```
 
-Second, activate the python venv:
-
-```source ./bin/activate```
-
 Third, run the tests:
 
-```python ./test.py```
+```make test```
+
+Do all tests pass without error?
+
+If yes, you can run the app (assuming you have patient data available):
+
+```make run```
 
 ## Note
 No patient data has been committed to this repository.
