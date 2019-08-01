@@ -36,8 +36,8 @@ def show_slices(slices, masks, gradients):
     fig.colorbar(cm.ScalarMappable(cmap=mask_colormap, norm=mask_norm), ax=axes[1], use_gridspec=True)
     fig.colorbar(cm.ScalarMappable(cmap=gradient_colormap, norm=gradient_norm), ax=axes[2], use_gridspec=True)
 
-images = loader.loadImages()
-mask = loader.loadMask()
+images = loader.loadImages('patient_1')
+mask = loader.loadMask('patient_1')
 masked = list(map(lambda i: fitter.apply_mask(i, mask, 95.0), images))
 grads = fitter.compute_gradients(masked)
 masked_grads = list(map(lambda i: fitter.apply_mask(i, mask, 95.0), grads))

@@ -15,6 +15,16 @@ class TestAllTheThings(unittest.TestCase):
         self.mask = mask
         self.mask_threshold = mask[0][0][0]-1 # Set threshold below the data value, to leave it unmasked.
 
+    def test_imagefinder(self):
+        pathlist = loader.findImages('testdata')
+        self.assertEqual(len(pathlist),4)
+
+    def test_listsorter(self):
+        unsorted = ["CBCT_2.nii","CBCT_15.nii","CBCT_3.nii"]
+        expected = ["CBCT_2.nii","CBCT_3.nii","CBCT_15.nii"]
+        result = loader.sortImages(unsorted)
+        self.assertEqual(result, expected)
+
     def test_fitter(self):
         degree = 1
         computed = fitter.compute_regressions(self.samples, degree)
