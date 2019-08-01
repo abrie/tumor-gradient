@@ -6,10 +6,19 @@ A screenshot of the result:
 
 ![Alt text](screenshots/1.jpg?raw=true "Output screenshot")
 
-## Development Environment
+## How to run it:
 
-Initialize dependencies in requirements.txt:
+First, install dependencies:
+
 ```make install```
 
-## Develop
-source ./bin/activate
+Second, activate the python venv:
+
+```source ./bin/activate```
+
+Third, run the tests:
+
+```python ./test.py```
+
+## Note
+No patient data has been committed to this repository.
