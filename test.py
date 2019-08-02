@@ -2,6 +2,21 @@ import unittest
 import numpy as np
 import fitter
 import loader
+import nibabel
+import os
+
+def generate_Nifiti_testfile(path, named, fill_value):
+    data = np.full((3,3,3), fill_value, dtype=np.int16)
+    img = nibabel.Nifti1Image(data, np.eye(4))
+    nibabel.save(img, os.path.join(path,named))
+
+def generate_testfiles(path, count):
+    if not os.path.exists(path):
+        os.mkdir(path)
+    for x in range(1,count+1):
+        filename = f"CBCT_{x}.nii"
+        fill_value = x
+        generate_Nifiti_testfile(path, filename, fill_value)
 
 class TestAllTheThings(unittest.TestCase):
     def setUp(self):
@@ -13,11 +28,21 @@ class TestAllTheThings(unittest.TestCase):
         mask = np.zeros((3, 3, 3))
         mask[0][0][0] = 50.0
         self.mask = mask
-        self.mask_threshold = mask[0][0][0]-1 # Set threshold below the data value, to leave it unmasked.
+        self.mask_threshold = mask[0][0][0]-1 # Set threshold to data-1, leaving it unmasked.
+
+        self.testfiles_dir = "testdata"
+        self.testfiles_count = 10
+        generate_testfiles(self.testfiles_dir, self.testfiles_count)
 
     def test_imagefinder(self):
-        pathlist = loader.findImages('testdata')
-        self.assertEqual(len(pathlist),4)
+        pathlist = loader.findImages(self.testfiles_dir)
+        self.assertEqual(len(pathlist), self.testfiles_count)
+
+    def test_imageloader(self):
+        data = loader.loadImages(self.testfiles_dir)
+        self.assertEqual(len(data), self.testfiles_count)
+        self.assertEqual(data[0][0][0][0], 1)
+        self.assertEqual(data[self.testfiles_count-1][0][0][0], self.testfiles_count)
 
     def test_listsorter(self):
         unsorted = ["CBCT_2.nii","CBCT_15.nii","CBCT_3.nii"]
