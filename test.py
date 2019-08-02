@@ -1,9 +1,10 @@
 import unittest
 import numpy as np
-import fitter
-import loader
 import nibabel
 import os
+
+import compute
+import loader
 
 def generate_nifti_testfile(path, named, fill_value):
     data = np.full((3,3,3), fill_value, dtype=np.int16)
@@ -62,22 +63,22 @@ class TestAllTheThings(unittest.TestCase):
         result = loader.sort_images(unsorted)
         self.assertEqual(result, expected)
 
-    def test_fitter(self):
+    def test_compute_regressions(self):
         degree = 1
-        computed = fitter.compute_regressions(self.samples, degree)
+        computed = compute.compute_regressions(self.samples, degree)
         expected = np.polyfit(range(len(self.samples)), self.vals, degree)
         self.assertAlmostEqual(computed[0][0][0][0], expected[0], places=3)
 
-    def test_gradient(self):
-        gradients = fitter.compute_gradients(self.samples)
+    def test_compute_gradients(self):
+        gradients = compute.compute_gradients(self.samples)
         self.assertEqual(gradients[0][0][0][0], 1.0)
         self.assertEqual(gradients[1][0][0][0], 2.5)
         self.assertEqual(gradients[2][0][0][0], 3.0)
         self.assertEqual(gradients[3][0][0][0], 2.0)
 
-    def test_masking(self):
+    def test_apply_mask(self):
         sample = self.samples[3]
-        masked = fitter.apply_mask(sample, self.mask, self.mask_threshold)
+        masked = compute.apply_mask(sample, self.mask, self.mask_threshold)
         self.assertEqual(np.ma.is_masked(masked),True)
         self.assertEqual(masked[0][0][0],sample[0][0][0])
         self.assertEqual(masked.mask[0][0][0],False)
