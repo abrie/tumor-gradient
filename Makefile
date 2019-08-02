@@ -9,7 +9,7 @@ test:
 	@( \
 		python3 -m venv $(PWD); \
 		source ./bin/activate; \
-		python3 test.py; \
+		python3 test.py -v; \
 		)
 
 run:
