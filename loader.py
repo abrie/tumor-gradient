@@ -18,18 +18,20 @@ def sortImages(filenames):
     result.sort(key=lambda filename: int(regex.match(filename).group(1)))
     return result
 
-def loadImage(path):
-    image = nibabel.load(path)
+def loadImage(path, imagename):
+    imagepath = os.path.join(path, imagename)
+    image = nibabel.load(imagepath)
     return image.get_fdata()
 
 def loadImages(path):
     if not os.path.exists(path):
-        print(f'Cannot find folder "{os.path.abspath(path)}".\nDoes the folder exist and contain patient data?')
+        print(f"Cannot find folder '{os.path.abspath(path)}'\n",
+                "Does the folder exist and contain patient data?"
+               )
         sys.exit()
 
-    filelist = findImages(path)
-    imagepaths = list(map(lambda filename: os.path.join(path, filename), filelist))
-    return list(map(lambda path: loadImage(path), imagepaths))
+    imagenames = sortImages(findImages(path))
+    return list(map(lambda name: loadImage(path, name), imagenames))
 
 def loadMask(path):
     maskPath = os.path.join(path, "mask.nii")
