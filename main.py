@@ -12,10 +12,10 @@ masked = list(map(lambda i: compute.apply_mask(i, mask, threshold), scaled))
 gradients = compute.compute_gradients(masked)
 masked_gradients = list(map(lambda i: compute.apply_mask(i, mask, threshold), gradients))
 
-slicehere = 30
-scaled_slices = list(map(lambda arr: arr[slicehere,:,:], scaled))
-masked_slices = list(map(lambda arr: arr[slicehere,:,:], masked))
-gradient_slices = list(map(lambda arr: arr[slicehere,:,:], masked_gradients))
+slicer = lambda arr: arr[30,:,:]
+scaled_slices = list(map(slicer, scaled))
+masked_slices = list(map(slicer, masked))
+gradient_slices = list(map(slicer, masked_gradients))
 
 plotter.plot(scaled_slices, masked_slices, gradient_slices)
 plotter.show()
