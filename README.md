@@ -1,6 +1,6 @@
-# Measuring Changes in Tumor Density
+# Measuring Changes in Tumour Density
 
-Given a series of NIfTI images describing a tumor under treatment, measure the tumor's density change as a function of time.
+Given a series of [NIfTI](https://nifti.nimh.nih.gov/) images describing a tumour under treatment, measure changes in the tumour's [Hounsfield](https://en.wikipedia.org/wiki/Hounsfield_scale) radiodensity as a function of time.
 
 A screenshot of the result:
 

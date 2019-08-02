@@ -1,5 +1,9 @@
 import numpy as np
 
+def to_hounsfield_units(images):
+    intercept = -1024
+    return list(map(lambda image: image.copy()+intercept, images))
+
 def compute_regressions(images, degree):
     num_images = len(images)
     A = np.stack(images)
