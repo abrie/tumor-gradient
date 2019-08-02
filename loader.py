@@ -37,3 +37,9 @@ def load_mask(path):
     maskPath = os.path.join(path, "mask.nii")
     maskImage = nibabel.load(maskPath)
     return maskImage.get_fdata()
+
+def load_dataset(path):
+    return {
+        "data": load_images(path),
+        "mask": load_mask(path)
+    }

@@ -2,8 +2,9 @@ import fitter
 import loader
 import plotter
 
-data = loader.load_images('patient_1')
-mask = loader.load_mask('patient_1')
+dataset = loader.load_dataset('patient_1')
+data = dataset["data"]
+mask = dataset["mask"]
 threshold = 95.0
 
 data = fitter.to_hounsfield_units(data)

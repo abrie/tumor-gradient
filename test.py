@@ -5,7 +5,7 @@ import loader
 import nibabel
 import os
 
-def generate_Nifiti_testfile(path, named, fill_value):
+def generate_nifti_testfile(path, named, fill_value):
     data = np.full((3,3,3), fill_value, dtype=np.int16)
     img = nibabel.Nifti1Image(data, np.eye(4))
     nibabel.save(img, os.path.join(path,named))
@@ -13,10 +13,13 @@ def generate_Nifiti_testfile(path, named, fill_value):
 def generate_testfiles(path, count):
     if not os.path.exists(path):
         os.mkdir(path)
+
     for x in range(1,count+1):
         filename = f"CBCT_{x}.nii"
         fill_value = x
-        generate_Nifiti_testfile(path, filename, fill_value)
+        generate_nifti_testfile(path, filename, fill_value)
+
+    generate_nifti_testfile(path, "mask.nii", 50)
 
 class TestAllTheThings(unittest.TestCase):
     def setUp(self):
@@ -43,6 +46,15 @@ class TestAllTheThings(unittest.TestCase):
         self.assertEqual(len(data), self.testfiles_count)
         self.assertEqual(data[0][0][0][0], 1)
         self.assertEqual(data[self.testfiles_count-1][0][0][0], self.testfiles_count)
+
+    def test_loadmask(self):
+        mask = loader.load_mask(self.testfiles_dir)
+        self.assertEqual(mask[0][0][0], 50)
+
+    def test_loaddataset(self):
+        dataset = loader.load_dataset(self.testfiles_dir)
+        self.assertEqual(len(dataset["data"]), self.testfiles_count)
+        self.assertIn("mask", dataset)
 
     def test_listsorter(self):
         unsorted = ["CBCT_2.nii","CBCT_15.nii","CBCT_3.nii"]
