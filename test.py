@@ -35,11 +35,11 @@ class TestAllTheThings(unittest.TestCase):
         generate_testfiles(self.testfiles_dir, self.testfiles_count)
 
     def test_imagefinder(self):
-        pathlist = loader.findImages(self.testfiles_dir)
+        pathlist = loader.find_images(self.testfiles_dir)
         self.assertEqual(len(pathlist), self.testfiles_count)
 
     def test_imageloader(self):
-        data = loader.loadImages(self.testfiles_dir)
+        data = loader.load_images(self.testfiles_dir)
         self.assertEqual(len(data), self.testfiles_count)
         self.assertEqual(data[0][0][0][0], 1)
         self.assertEqual(data[self.testfiles_count-1][0][0][0], self.testfiles_count)
@@ -47,7 +47,7 @@ class TestAllTheThings(unittest.TestCase):
     def test_listsorter(self):
         unsorted = ["CBCT_2.nii","CBCT_15.nii","CBCT_3.nii"]
         expected = ["CBCT_2.nii","CBCT_3.nii","CBCT_15.nii"]
-        result = loader.sortImages(unsorted)
+        result = loader.sort_images(unsorted)
         self.assertEqual(result, expected)
 
     def test_fitter(self):
