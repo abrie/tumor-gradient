@@ -1,5 +1,8 @@
-patient_1/
+#Ignore locally installed Python venv stuff.
 pyvenv.cfg
 __pycache__/
 bin/
 lib/
+
+#Ignore 'production' dataset, for privacy.
+patient_1/
