@@ -1,29 +1,25 @@
 import unittest
 import numpy as np
-import nibabel
 import os
 
 import compute
 import loader
+import builder
 
-def generate_nifti_testfile(path, named, fill_value):
-    data = np.full((3,3,3), fill_value, dtype=np.int16)
-    img = nibabel.Nifti1Image(data, np.eye(4))
-    nibabel.save(img, os.path.join(path,named))
-
-def generate_testfiles(path, count):
+def generate_testfiles(path, shape, count):
     if not os.path.exists(path):
         os.mkdir(path)
 
-    for x in range(1,count+1):
-        filename = f"CBCT_{x}.nii"
+    for x in range(1, count+1):
+        named = f"CBCT_{x}.nii"
         fill_value = x
-        generate_nifti_testfile(path, filename, fill_value)
+        builder.generate_nifti_file(path, named, shape, fill_value)
 
-    generate_nifti_testfile(path, "mask.nii", 50)
+    builder.generate_nifti_file(path, "mask.nii", shape, 50)
 
 class TestAllTheThings(unittest.TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         self.vals = [0.0,1.0,5.0,7.0]
         self.samples = list(map(lambda p: np.zeros((3, 3, 3)), self.vals))
         for (sample, val) in zip(self.samples, self.vals):
@@ -36,7 +32,7 @@ class TestAllTheThings(unittest.TestCase):
 
         self.testfiles_dir = "testdata"
         self.testfiles_count = 10
-        generate_testfiles(self.testfiles_dir, self.testfiles_count)
+        generate_testfiles(self.testfiles_dir, (3, 3, 3), self.testfiles_count)
 
     def test_imagefinder(self):
         pathlist = loader.find_images(self.testfiles_dir)
