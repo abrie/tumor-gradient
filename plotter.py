@@ -20,7 +20,7 @@ def plot(data, masks, gradients):
     fig.colorbar(cm.ScalarMappable(cmap=data_colormap, norm=data_norm), ax=axes[0], use_gridspec=True)
 
     for i, s in enumerate(data):
-        axes[0][i].imshow(s, cmap=data_colormap, origin="lower")
+        axes[0][i].imshow(s, cmap=data_colormap, norm=data_norm, origin="lower")
 
 
     # plot the mask slices
@@ -30,7 +30,7 @@ def plot(data, masks, gradients):
     fig.colorbar(cm.ScalarMappable(cmap=mask_colormap, norm=mask_norm), ax=axes[1], use_gridspec=True)
 
     for i, s in enumerate(masks):
-        axes[1][i].imshow(s, cmap=mask_colormap, origin="lower")
+        axes[1][i].imshow(s, cmap=mask_colormap, norm=mask_norm, origin="lower")
 
 
     # plot the gradient slices
