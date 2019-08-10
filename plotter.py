@@ -38,8 +38,9 @@ def plot(data, masks, gradients):
     gradient_min = np.amin(gradient_stack)
     gradient_max = np.amax(gradient_stack)
     gradient_bounds = [gradient_min, 0, gradient_max]
-    gradient_colormap = colors.ListedColormap(['green', 'red'])
-    gradient_norm = colors.BoundaryNorm(gradient_bounds, gradient_colormap.N)
+    #gradient_colormap = colors.ListedColormap(['green', 'red'])
+    gradient_colormap = colors.LinearSegmentedColormap.from_list('gradient_colormap', [ (0, 1, 0), (1, 0, 0) ], N=25)
+    gradient_norm = colors.Normalize(vmin=gradient_min, vmax=gradient_max)
 
     fig.colorbar(cm.ScalarMappable(cmap=gradient_colormap, norm=gradient_norm), ax=axes[2], use_gridspec=True)
 
