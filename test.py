@@ -6,6 +6,7 @@ import compute
 import loader
 import builder
 
+
 def generate_testfiles(path, shape, count):
     if not os.path.exists(path):
         os.mkdir(path)
@@ -17,10 +18,11 @@ def generate_testfiles(path, shape, count):
 
     builder.generate_nifti_file(path, "mask.nii", shape, 50)
 
+
 class TestAllTheThings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.vals = [0.0,1.0,5.0,7.0]
+        self.vals = [0.0, 1.0, 5.0, 7.0]
         self.samples = list(map(lambda p: np.zeros((3, 3, 3)), self.vals))
         for (sample, val) in zip(self.samples, self.vals):
             sample[0][0][0] = val
@@ -28,7 +30,8 @@ class TestAllTheThings(unittest.TestCase):
         mask = np.zeros((3, 3, 3))
         mask[0][0][0] = 50.0
         self.mask = mask
-        self.mask_threshold = mask[0][0][0]-1 # Set threshold to data-1, leaving it unmasked.
+        # Set threshold to data-1, leaving it unmasked.
+        self.mask_threshold = mask[0][0][0]-1
 
         self.testfiles_dir = "testdata"
         self.testfiles_count = 10
@@ -42,7 +45,8 @@ class TestAllTheThings(unittest.TestCase):
         data = loader.load_images(self.testfiles_dir)
         self.assertEqual(len(data), self.testfiles_count)
         self.assertEqual(data[0][0][0][0], 1)
-        self.assertEqual(data[self.testfiles_count-1][0][0][0], self.testfiles_count)
+        self.assertEqual(data[self.testfiles_count-1][0]
+                         [0][0], self.testfiles_count)
 
     def test_loadmask(self):
         mask = loader.load_mask(self.testfiles_dir)
@@ -54,8 +58,8 @@ class TestAllTheThings(unittest.TestCase):
         self.assertIn("mask", dataset)
 
     def test_listsorter(self):
-        unsorted = ["CBCT_2.nii","CBCT_15.nii","CBCT_3.nii"]
-        expected = ["CBCT_2.nii","CBCT_3.nii","CBCT_15.nii"]
+        unsorted = ["CBCT_2.nii", "CBCT_15.nii", "CBCT_3.nii"]
+        expected = ["CBCT_2.nii", "CBCT_3.nii", "CBCT_15.nii"]
         result = loader.sort_images(unsorted)
         self.assertEqual(result, expected)
 
@@ -75,10 +79,11 @@ class TestAllTheThings(unittest.TestCase):
     def test_apply_mask(self):
         sample = self.samples[3]
         masked = compute.apply_mask(sample, self.mask, self.mask_threshold)
-        self.assertEqual(np.ma.is_masked(masked),True)
-        self.assertEqual(masked[0][0][0],sample[0][0][0])
-        self.assertEqual(masked.mask[0][0][0],False)
-        self.assertEqual(masked.mask[1][0][0],True)
+        self.assertEqual(np.ma.is_masked(masked), True)
+        self.assertEqual(masked[0][0][0], sample[0][0][0])
+        self.assertEqual(masked.mask[0][0][0], False)
+        self.assertEqual(masked.mask[1][0][0], True)
+
 
 if __name__ == '__main__':
     unittest.main()
